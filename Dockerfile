@@ -4,7 +4,7 @@ LABEL Nikolai Lauvås "nikolai.lauvas@ntnu.no"
 
 # USAGE: docker run -it -v ~/raspberry/hello:/build nikolai/pi-cross-compile
 # USAGE with CMAKE: sudo docker run -it -v ~/raspberry/dune:/build -v ~/lststools/dune:/project pi-cross-compile bash -c "cmake -DCMAKE_TOOLCHAIN_FILE=/ompl/build/toolchain.cmake ../project && cmake --build . -j 14 && make package"
-LABEL com.nikolai.pi-cross-compile="{\"Description\":\"Cross Compile for Raspberry Pi\",\"Usage\":\"docker run -it -v ~/myprojects/mybuild:/build nikolai/pi-cross-compile\",\"Version\":\"0.1.0\"}"
+LABEL com.nikolai.pi-cross-compile2="{\"Description\":\"Cross Compile for Raspberry Pi\",\"Usage\":\"docker run -it -v ~/myprojects/mybuild:/build nikolai/pi-cross-compile\",\"Version\":\"0.1.0\"}"
 
 # Multiarch modifications
 RUN dpkg --add-architecture arm64
@@ -25,7 +25,7 @@ RUN apt-get update
 
 # Install build tools and set timezone of host
 RUN DEBIAN_FRONTEND=noninteractive TZ=Etc/UTC apt-get -y install tzdata
-RUN apt-get install -y git && apt-get install -y build-essential g++-aarch64-linux-gnu cmake
+RUN apt-get install -y git && apt-get install -y build-essential g++-aarch64-linux-gnu cmake python3
 
 # Install target libraries
 RUN apt-get -y install libeigen3-dev:arm64 libboost-dev:arm64 libgps-dev:arm64 libboost-system-dev:arm64 libgpiod-dev:arm64
@@ -42,6 +42,7 @@ set(tools /usr/bin)\n\
 set(CMAKE_C_COMPILER \${tools}/aarch64-linux-gnu-gcc-9)\n\
 set(CMAKE_CXX_COMPILER \${tools}/aarch64-linux-gnu-g++-9)\n\
 add_compile_options(-mcpu=cortex-a72 -mtune=cortex-a72)\n\
+set(PYTHON_EXE:FILEPATH=`which python`)\
 " >> ompl/build/toolchain.cmake
 
 RUN cd ompl/build/Release && cmake -DCMAKE_TOOLCHAIN_FILE=../toolchain.cmake ../..
