@@ -42,7 +42,6 @@ set(tools /usr/bin)\n\
 set(CMAKE_C_COMPILER \${tools}/aarch64-linux-gnu-gcc-9)\n\
 set(CMAKE_CXX_COMPILER \${tools}/aarch64-linux-gnu-g++-9)\n\
 add_compile_options(-mcpu=cortex-a72 -mtune=cortex-a72)\n\
-set(PYTHON_EXE:FILEPATH=`which python`)\
 " >> ompl/build/toolchain.cmake
 
 RUN cd ompl/build/Release && cmake -DCMAKE_TOOLCHAIN_FILE=../toolchain.cmake ../..
