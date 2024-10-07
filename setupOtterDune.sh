@@ -11,7 +11,8 @@ NC='\033[0m' # No Color
 printf "I ${RED}love${NC} Stack Overflow\n"
 # Add build with otter IMC
 sudo docker run -it -v ~/dune:/project pi-cross-compile bash -c "cd /project/build &&\
-cmake -DPYTHON_INCLUDE_DIR=$(python -c "import sysconfig; print(sysconfig.get_path('include'))")  \
+cmake -DCMAKE_TOOLCHAIN_FILE=/ompl/build/toolchain.cmake \\
+-DPYTHON_INCLUDE_DIR=$(python -c "import sysconfig; print(sysconfig.get_path('include'))")  \
 -DPYTHON_LIBRARY=$(python -c "import sysconfig; print(sysconfig.get_config_var('LIBDIR'))") \
 -DPYTHON_EXE:FILEPATH=`which python3` \
 -DIMC_TAG=ntnuOtterASV \

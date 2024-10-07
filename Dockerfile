@@ -4,7 +4,7 @@ LABEL Nikolai Lauvås "nikolai.lauvas@ntnu.no"
 
 # USAGE: docker run -it -v ~/raspberry/hello:/build nikolai/pi-cross-compile
 # USAGE with CMAKE: sudo docker run -it -v ~/raspberry/dune:/build -v ~/lststools/dune:/project pi-cross-compile bash -c "cmake -DCMAKE_TOOLCHAIN_FILE=/ompl/build/toolchain.cmake ../project && cmake --build . -j 14 && make package"
-LABEL com.nikolai.pi-cross-compile2="{\"Description\":\"Cross Compile for Raspberry Pi\",\"Usage\":\"docker run -it -v ~/myprojects/mybuild:/build nikolai/pi-cross-compile\",\"Version\":\"0.1.0\"}"
+LABEL com.nikolai.pi-cross-compileH="{\"Description\":\"Cross Compile for Raspberry Pi\",\"Usage\":\"docker run -it -v ~/myprojects/mybuild:/build nikolai/pi-cross-compile\",\"Version\":\"0.1.0\"}"
 
 # Multiarch modifications
 RUN dpkg --add-architecture arm64
@@ -30,7 +30,7 @@ RUN apt-get install -y git && apt-get install -y build-essential g++-aarch64-lin
 # Install target libraries
 RUN apt-get -y install libeigen3-dev:arm64 libboost-dev:arm64 libgps-dev:arm64 libboost-system-dev:arm64 libgpiod-dev:arm64
 RUN apt-get -y install libboost-serialization-dev:arm64 libboost-filesystem-dev:arm64 libboost-system-dev:arm64 libboost-program-options-dev:arm64 libboost-test-dev:arm64 libeigen3-dev:arm64 libode-dev:arm64 libyaml-cpp-dev:arm64
-
+RUN apt-get install -y liblapack-dev:arm64 gfortran-aarch64-linux-gnu
 # Get and build the latest OMPL for the target
 RUN git clone --recurse-submodules https://github.com/ompl/ompl.git
 RUN cd ompl
@@ -47,7 +47,7 @@ set(PYTHON_EXE:FILEPATH=`which python`)\
 
 RUN cd ompl/build/Release && cmake -DCMAKE_TOOLCHAIN_FILE=../toolchain.cmake ../..
 RUN cd ompl/build/Release && make -j14 && make install
-
+RUN apt-get update && apt-get install -y libmetis-dev:arm64
 # Reload the list of system-wide library paths
 RUN ldconfig
 
