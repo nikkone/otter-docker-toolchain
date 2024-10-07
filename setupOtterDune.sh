@@ -6,9 +6,6 @@ git clone https://github.com/LSTS/dune.git dune
 cd dune
 git clone https://github.com/nikkone/dune-otter-public user
 mkdir build
-BLUE='\033[0;34m'         # Blue
-NC='\033[0m' # No Color
-printf "I ${RED}love${NC} Stack Overflow\n"
 # Add build with otter IMC
 sudo docker run -it -v ~/dune:/project pi-cross-compile bash -c "cd /project/build &&\
 cmake -DCMAKE_TOOLCHAIN_FILE=/ompl/build/toolchain.cmake \\
